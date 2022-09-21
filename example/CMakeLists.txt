@@ -1,0 +1,8 @@
+set(PROGS random_choice discrete_distribution tower_sampling)
+foreach(name ${PROGS})
+  set(target_name example_${name})
+  add_executable(${target_name} ${name}.cpp)
+  set_target_properties(${target_name} PROPERTIES OUTPUT_NAME ${name})
+  target_link_libraries(${target_name} walker)
+  add_test(${target_name} ${name})
+endforeach(name)

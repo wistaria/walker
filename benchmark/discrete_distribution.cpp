@@ -3,9 +3,6 @@
 #include <vector>
 #include <standards/timer.hpp>
 
-static const unsigned int n = 9;
-static const unsigned int samples = 100000;
-
 int main(int argc, char** argv) {
   double duration;
   std::vector<int> sizes;
@@ -22,6 +19,7 @@ int main(int argc, char** argv) {
   engine_type eng(29411);
   std::uniform_real_distribution<> dist;
 
+  std::cout << "# n samples elapsed samples/sec xor\n";
   for (auto n : sizes) {
     // generate weights
     std::vector<double> weights(n);
@@ -36,16 +34,11 @@ int main(int argc, char** argv) {
     double elapsed = 0.0;
     for (; elapsed < duration && loop < (1 << 30); loop *= 2) {
       standards::timer t;
-      for (int p = 0; p < loop; ++p) auto r = rc(eng);
+      for (int p = 0; p < loop; ++p) r ^= rc(eng);
       elapsed = t.elapsed();
     }
 
-    if (r < 0 || r >= n) {
-      std::cerr << "range error\n";
-      std::exit(127);
-    }
-
     auto perf = loop / elapsed;
-    std::cout << n << ' ' << loop << ' ' << ' ' << elapsed << ' ' << perf << std::endl;
+    std::cout << n << ' ' << loop << ' ' << ' ' << elapsed << ' ' << perf << ' ' << r << std::endl;
   }
 }

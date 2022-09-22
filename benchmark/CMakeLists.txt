@@ -1,4 +1,4 @@
-set(PROGS random_choice discrete_distribution tower_sampling)
+set(PROGS mt19937 uniform_real random_choice discrete_distribution tower_sampling)
 foreach(name ${PROGS})
   set(target_name benchmark_${name})
   add_executable(${target_name} ${name}.cpp)
